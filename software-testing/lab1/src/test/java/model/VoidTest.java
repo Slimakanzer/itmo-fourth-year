@@ -1,33 +1,19 @@
-import model.Point;
-import model.Void;
-import model.*;
+package model;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
 
-public class ModelTest {
-    private Engine engine;
+public class VoidTest {
     private Void<Point> modelVoid;
     private Air air;
 
     @Before
     public void setUp(){
-        engine = new Engine();
         air = new Air(100);
         modelVoid = new Void<>();
-    }
-
-    @Test
-    public void testInitialStateOfEngineIsNotHummed(){
-        Assert.assertFalse(engine.isHummed());
-    }
-
-    @Test
-    public void testHumEngine(){
-        engine.start();
-        Assert.assertTrue(engine.isHummed());
     }
 
     @Test
@@ -122,39 +108,5 @@ public class ModelTest {
             Assert.assertNotEquals(Point.BrightnessType.IncrediblyHigh, point.getBrightness());
             Assert.assertTrue(point.isShiny());
         }
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testInitPersonWithNegativeWeight(){
-        new Person("Форд", -1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testInitPersonWithZeroWeight(){
-        new Person("Форд", 0);
-    }
-
-    @Test
-    public void testPersonFlewOutIntoVoid(){
-        Person person = new Person("Форд", 65);
-        Assert.assertFalse(person.isAbsorbed());
-        Assert.assertEquals(Person.PersonCondition.AllRight, person.getCondition());
-
-        modelVoid.suckAnObject(person);
-
-        Assert.assertTrue(person.isAbsorbed());
-        Assert.assertEquals(Person.PersonCondition.FlewOutLikeConfetti, person.getCondition());
-    }
-
-    @Test
-    public void testFatPersonRippedToPieces(){
-        Person person = new Person("Форд", 120);
-        Assert.assertFalse(person.isAbsorbed());
-        Assert.assertEquals(Person.PersonCondition.AllRight, person.getCondition());
-
-        modelVoid.suckAnObject(person);
-
-        Assert.assertTrue(person.isAbsorbed());
-        Assert.assertEquals(Person.PersonCondition.RippedToPieces, person.getCondition());
     }
 }
