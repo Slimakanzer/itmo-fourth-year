@@ -1,8 +1,0 @@
-sv work "glbl.v"
-sv xil_defaultlib "AESL_autofifo_a_V.v"
-sv xil_defaultlib "AESL_autofifo_b_V.v"
-sv xil_defaultlib "AESL_autofifo_c_V.v"
-sv xil_defaultlib "mul.autotb.v"
-sv xil_defaultlib "mul.v"
-sv xil_defaultlib "mul_a_cache.v"
-
