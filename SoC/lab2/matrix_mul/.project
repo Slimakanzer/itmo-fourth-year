@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>matrix_mul</name>
+	<name>proj_hls_stream</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -37,54 +37,34 @@
 			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/.apc/.tb</location>
 		</link>
 		<link>
-			<name>.reference/mul.h</name>
-			<type>1</type>
-			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/src/mul.h</location>
-		</link>
-		<link>
-			<name>.reference/stdint-gcc.h</name>
-			<type>1</type>
-			<location>C:/Xilinx/Vivado/2019.1/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/stdint-gcc.h</location>
-		</link>
-		<link>
-			<name>.reference/stdint.h</name>
-			<type>1</type>
-			<location>C:/Xilinx/Vivado/2019.1/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/stdint.h</location>
-		</link>
-		<link>
-			<name>.reference/stdlib.h</name>
-			<type>1</type>
-			<location>C:/Xilinx/Vivado/2019.1/msys64/mingw64/x86_64-w64-mingw32/include/stdlib.h</location>
-		</link>
-		<link>
-			<name>mul/constraints</name>
+			<name>solution/constraints</name>
 			<type>2</type>
-			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/mul/.tcls</location>
+			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/solution/.tcls</location>
 		</link>
 		<link>
-			<name>source/mul.c</name>
+			<name>source/mul.cpp</name>
 			<type>1</type>
-			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/src/mul.c</location>
+			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/mul.cpp</location>
 		</link>
 		<link>
-			<name>testbench/mul_test.c</name>
+			<name>testbench/mul_test.cpp</name>
 			<type>1</type>
-			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/src/mul_test.c</location>
+			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/mul_test.cpp</location>
 		</link>
 		<link>
-			<name>mul/constraints/.xml.directive</name>
+			<name>solution/constraints/.xml.directive</name>
 			<type>1</type>
-			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/mul/mul.directive</location>
+			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/solution/solution.directive</location>
 		</link>
 		<link>
-			<name>mul/constraints/directives.tcl</name>
+			<name>solution/constraints/directives.tcl</name>
 			<type>1</type>
-			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/mul/directives.tcl</location>
+			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/solution/directives.tcl</location>
 		</link>
 		<link>
-			<name>mul/constraints/script.tcl</name>
+			<name>solution/constraints/script.tcl</name>
 			<type>1</type>
-			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/mul/script.tcl</location>
+			<location>C:/Users/slimakanzer/itmo-fourth-year/SoC/lab2/matrix_mul/solution/script.tcl</location>
 		</link>
 	</linkedResources>
 </projectDescription>

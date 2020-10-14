@@ -12,8 +12,10 @@
   <warningLogs>
     <logs>
       <synLog>
-        <logs message="WARNING: [SCHED 204-69] Unable to schedule 'load' operation ('a_load_1', src/mul.c:62) on array 'a' due to limited memory ports. Please consider using a memory core with more ports or partitioning the array 'a'." projectName="matrix_mul" solutionName="mul" date="2020-10-09T00:09:01.759+0300" type="Warning"/>
-        <logs message="WARNING: [XFORM 203-542] Cannot flatten a loop nest 'Row' (src/mul.c:54:41) in function 'mul' : &#xD;&#xA;&#xD;&#xA;the outer loop is not a perfect loop because there is nontrivial logic before entering the inner loop." projectName="matrix_mul" solutionName="mul" date="2020-10-09T00:09:01.465+0300" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-542] Cannot flatten a loop nest 'Row' (mul.cpp:28:44) in function 'mul' : &#xD;&#xA;&#xD;&#xA;the outer loop is not a perfect loop because there is nontrivial logic before entering the inner loop." projectName="matrix_mul" solutionName="solution" date="2020-10-14T22:56:45.956+0300" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-542] Cannot flatten a loop nest 'Row_cache' (mul.cpp:18:47) in function 'mul' : &#xD;&#xA;&#xD;&#xA;the outer loop is not a perfect loop because there is nontrivial logic before entering the inner loop." projectName="matrix_mul" solutionName="solution" date="2020-10-14T22:56:45.154+0300" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-69] Unable to schedule 'load' operation ('b_cache_load_2', mul.cpp:36) on array 'b_cache', mul.cpp:14 due to limited memory ports. Please consider using a memory core with more ports or partitioning the array 'b_cache'." projectName="proj_hls_stream" solutionName="solution2" date="2020-10-14T22:31:49.596+0300" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-542] Cannot flatten a loop nest 'Row' (mul.cpp:26:44) in function 'mul' : &#xD;&#xA;&#xD;&#xA;the outer loop is not a perfect loop because there is nontrivial logic before entering the inner loop." projectName="proj_hls_stream" solutionName="solution2" date="2020-10-14T22:31:49.218+0300" type="Warning"/>
       </synLog>
       <simLog/>
       <mgLog/>

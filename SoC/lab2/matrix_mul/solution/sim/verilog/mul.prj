@@ -1,0 +1,12 @@
+sv work "glbl.v"
+sv xil_defaultlib "AESL_axi_s_a_V.v"
+sv xil_defaultlib "AESL_axi_s_b_V.v"
+sv xil_defaultlib "AESL_axi_s_c_V.v"
+sv xil_defaultlib "AESL_axi_s_n.v"
+sv xil_defaultlib "AESL_fifo.v"
+sv xil_defaultlib "mul.autotb.v"
+sv xil_defaultlib "mul.v"
+sv xil_defaultlib "mul_a_cache_0.v"
+sv xil_defaultlib "mul_b_cache_0.v"
+sv xil_defaultlib "mul_mux_104_32_1_1.v"
+

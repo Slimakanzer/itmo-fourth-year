@@ -1,6 +1,0 @@
-sv work "glbl.v"
-sv xil_defaultlib "AESL_axi_slave_AXILiteS.v"
-sv xil_defaultlib "mul.autotb.v"
-sv xil_defaultlib "mul.v"
-sv xil_defaultlib "mul_AXILiteS_s_axi.v"
-
