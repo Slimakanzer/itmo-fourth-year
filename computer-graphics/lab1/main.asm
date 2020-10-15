@@ -82,57 +82,6 @@ PrintPoint 1, 1
 
 WaitAndClear
 
-;-----------------------------------------------
-PrintHorizontalLine macro x_start, x_end, y
-    mov dx, 3ceh
-    mov al, 8
-    out dx, al
-    inc dx
-    mov al, 0ffh
-    out dx, al
-
-    mov ax, x_end
-    sub ax, x_start
-
-    mov bx, y
-    mov dx, bx
-
-    mov cl, 4       ; y*640
-    sal bx, cl
-    sal dx, cl
-
-    mov cl, 2
-    sal bx, cl
-    add bx, dx
-
-    mov dx, x_start ; y*640 + x
-    mov cl, 3
-    shr dx, cl
-    add bx, dx
-    
-    mov dx, ax
-    and dx, 07h
-
-    mov cl, 3
-    shr ax, cl
-    mov cx, ax
-
-    h_loop:
-    mov es:[bx], 0ffh
-    inc bx
-    loop h_loop
-
-    mov ax, 80h
-    mov cl, dl
-    sar al, cl
-    mov es:[bx], al
-endm
-
-PrintHorizontalLine 0, 31, 10
-;-----------------------------------------------
-
-WaitAndClear
-
 mov ax,4c00h    ;выход
 int 21h         ;
 end
