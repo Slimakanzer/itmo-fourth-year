@@ -1,0 +1,6 @@
+[1019/154111.981:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1019/154129.087:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1019/193143.204:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
+[1019/193143.205:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1019/193143.205:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1019/200724.316:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
