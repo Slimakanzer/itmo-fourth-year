@@ -3,7 +3,7 @@ use std::f32::consts::PI;
 use std::vec::Vec;
 
 use crate::common::load_texture;
-use crate::mesh::{Mesh, Vertex};
+use crate::mesh::{Mesh, TextureType, Vertex};
 use crate::Shader;
 
 pub struct Sphere {
@@ -15,7 +15,9 @@ impl Sphere {
         let mut vertices = Vec::new();
         let mut indices = Vec::new();
         let mut textures = Vec::new();
-        textures.push(load_texture("resources/earth.png", "texture_diffuse"));
+        textures.push(load_texture("resources/earth_d.jpg", TextureType::Diffuse));
+        textures.push(load_texture("resources/earth_s.jpg", TextureType::Specular));
+        textures.push(load_texture("resources/earth_n.png", TextureType::Normal));
 
         let sector_step = 2.0 * PI / sector_count as f32;
         let stack_step = PI / stack_count as f32;

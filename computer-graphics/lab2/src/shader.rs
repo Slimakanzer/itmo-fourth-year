@@ -6,7 +6,8 @@ use std::str;
 use gl;
 use gl::types::*;
 
-use cgmath::{Matrix, Matrix4};
+use cgmath::prelude::*;
+use cgmath::{Matrix, Matrix4, Vector2, Vector3};
 
 pub struct Shader {
     pub id: u32,
@@ -95,6 +96,26 @@ impl Shader {
             1,
             gl::FALSE,
             mat.as_ptr(),
+        );
+    }
+
+    pub unsafe fn set_float(&self, name: &CString, value: f32) {
+        gl::Uniform1f(gl::GetUniformLocation(self.id, name.as_ptr()), value);
+    }
+
+    pub unsafe fn set_vec3(&self, name: &CString, value: &Vector3<f32>) {
+        gl::Uniform3fv(
+            gl::GetUniformLocation(self.id, name.as_ptr()),
+            1,
+            value.as_ptr(),
+        );
+    }
+
+    pub unsafe fn set_vec2(&self, name: &CString, value: &Vector2<f32>) {
+        gl::Uniform2fv(
+            gl::GetUniformLocation(self.id, name.as_ptr()),
+            1,
+            value.as_ptr(),
         );
     }
 

@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 
 use std::ffi::CString;
+use std::fmt;
 use std::mem::size_of;
 use std::os::raw::c_void;
 use std::ptr;
@@ -33,10 +34,31 @@ impl Default for Vertex {
     }
 }
 
+#[derive(PartialEq, Clone, Copy)]
+pub enum TextureType {
+    Diffuse,
+    Specular,
+    Height,
+    Normal,
+}
+
+impl fmt::Display for TextureType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            Diffuse => write!(f, "texture_diffuse"),
+            Specular => write!(f, "texture_specular"),
+            Height => write!(f, "texture_height"),
+            Normal => write!(f, "texture_normal"),
+        }
+    }
+}
+
+use self::TextureType::*;
+
 #[derive(Clone)]
 pub struct Texture {
     pub id: u32,
-    pub type_: String,
+    pub texture_type: TextureType,
     pub path: String,
 }
 
@@ -75,28 +97,27 @@ impl Mesh {
         let mut height_number = 0;
         for (i, texture) in self.textures.iter().enumerate() {
             gl::ActiveTexture(gl::TEXTURE0 + i as u32);
-            let name = &texture.type_;
-            let number = match name.as_str() {
-                "texture_diffuse" => {
+            let texture_type = &texture.texture_type;
+            let number = match texture_type {
+                Diffuse => {
                     diffuse_number += 1;
                     diffuse_number
                 }
-                "texture_specular" => {
+                Specular => {
                     specular_number += 1;
                     specular_number
                 }
-                "texture_normal" => {
+                Normal => {
                     normal_number += 1;
                     normal_number
                 }
-                "texture_height" => {
+                Height => {
                     height_number += 1;
                     height_number
                 }
-                _ => panic!("unknown texture type"),
             };
             // now set the sampler to the correct texture unit
-            let sampler = CString::new(format!("{}{}", name, number)).unwrap();
+            let sampler = CString::new(format!("{}{}", texture_type.to_string(), number)).unwrap();
             gl::Uniform1i(
                 gl::GetUniformLocation(shader.id, sampler.as_ptr()),
                 i as i32,

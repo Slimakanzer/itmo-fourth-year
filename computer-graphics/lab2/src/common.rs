@@ -1,5 +1,3 @@
-use std::sync::mpsc::Receiver;
-
 use gl;
 extern crate glfw;
 use self::glfw::{Action, Key};
@@ -11,47 +9,12 @@ use std::os::raw::c_void;
 use std::path::Path;
 
 use crate::mesh;
-use mesh::Texture;
+use mesh::{Texture, TextureType};
 
 use crate::camera;
 use camera::Camera;
 use camera::CameraMovement::*;
 
-pub fn process_events(
-    events: &Receiver<(f64, glfw::WindowEvent)>,
-    first_mouse: &mut bool,
-    last_x: &mut f32,
-    last_y: &mut f32,
-    camera: &mut Camera,
-) {
-    for (_, event) in glfw::flush_messages(events) {
-        match event {
-            glfw::WindowEvent::FramebufferSize(width, height) => unsafe {
-                gl::Viewport(0, 0, width, height)
-            },
-            glfw::WindowEvent::CursorPos(xpos, ypos) => {
-                let (xpos, ypos) = (xpos as f32, ypos as f32);
-                if *first_mouse {
-                    *last_x = xpos;
-                    *last_y = ypos;
-                    *first_mouse = false;
-                }
-
-                let xoffset = xpos - *last_x;
-                let yoffset = *last_y - ypos;
-
-                *last_x = xpos;
-                *last_y = ypos;
-
-                camera.process_mouse_movement(xoffset, yoffset, true);
-            }
-            _ => {}
-        }
-    }
-}
-
-/// Input processing function as introduced in 1.7.4 (Camera Class) and used in
-/// most later tutorials
 pub fn process_input(window: &mut glfw::Window, delta_time: f32, camera: &mut Camera) {
     if window.get_key(Key::Escape) == Action::Press {
         window.set_should_close(true)
@@ -69,12 +32,25 @@ pub fn process_input(window: &mut glfw::Window, delta_time: f32, camera: &mut Ca
     if window.get_key(Key::D) == Action::Press {
         camera.process_keyboard(RIGHT, delta_time);
     }
+
+    if window.get_key(Key::Up) == Action::Press {
+        camera.process_keyboard(UP_ROTATION, delta_time);
+    }
+    if window.get_key(Key::Down) == Action::Press {
+        camera.process_keyboard(DOWN_ROTATION, delta_time);
+    }
+    if window.get_key(Key::Left) == Action::Press {
+        camera.process_keyboard(LEFT_ROTATION, delta_time);
+    }
+    if window.get_key(Key::Right) == Action::Press {
+        camera.process_keyboard(RIGHT_ROTATION, delta_time);
+    }
 }
 
-pub fn load_texture(path: &str, type_name: &str) -> Texture {
+pub fn load_texture(path: &str, texture_type: TextureType) -> Texture {
     Texture {
         id: unsafe { load_texture_from_file(path) },
-        type_: type_name.into(),
+        texture_type: texture_type,
         path: path.into(),
     }
 }

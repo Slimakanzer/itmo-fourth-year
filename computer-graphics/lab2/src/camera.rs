@@ -12,6 +12,10 @@ pub enum CameraMovement {
     BACKWARD,
     LEFT,
     RIGHT,
+    UP_ROTATION,
+    DOWN_ROTATION,
+    LEFT_ROTATION,
+    RIGHT_ROTATION,
 }
 use self::CameraMovement::*;
 
@@ -64,6 +68,7 @@ impl Camera {
 
     pub fn process_keyboard(&mut self, direction: CameraMovement, delta_time: f32) {
         let velocity = self.movement_speed * delta_time;
+        let rotation_velocity = velocity * 20.0;
         if direction == FORWARD {
             self.position += self.front * velocity;
         }
@@ -76,32 +81,22 @@ impl Camera {
         if direction == RIGHT {
             self.position += self.right * velocity;
         }
-    }
-
-    pub fn process_mouse_movement(
-        &mut self,
-        mut xoffset: f32,
-        mut yoffset: f32,
-        constrain_pitch: bool,
-    ) {
-        xoffset *= self.mouse_sensitivity;
-        yoffset *= self.mouse_sensitivity;
-
-        self.yaw += xoffset;
-        self.pitch += yoffset;
-
-        // Make sure that when pitch is out of bounds, screen doesn't get flipped
-        if constrain_pitch {
-            if self.pitch > 89.0 {
-                self.pitch = 89.0;
-            }
-            if self.pitch < -89.0 {
-                self.pitch = -89.0;
-            }
+        if direction == UP_ROTATION {
+            self.pitch += rotation_velocity;
+            self.update_camera();
         }
-
-        // Update Front, Right and Up Vectors using the updated Eular angles
-        self.update_camera();
+        if direction == DOWN_ROTATION {
+            self.pitch -= rotation_velocity;
+            self.update_camera();
+        }
+        if direction == RIGHT_ROTATION {
+            self.yaw += rotation_velocity;
+            self.update_camera();
+        }
+        if direction == LEFT_ROTATION {
+            self.yaw -= rotation_velocity;
+            self.update_camera();
+        }
     }
 
     fn update_camera(&mut self) {
