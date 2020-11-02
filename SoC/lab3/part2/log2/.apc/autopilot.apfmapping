@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autopilotfilemapping:AutoPilotFileMapping xmlns:autopilotfilemapping="www.autoesl.com/autopilotfilemapping">
+  <source>
+    <originFiles name="log2.c" path="C:\Users\slimakanzer\source\itmo-fourth-year\SoC\lab3\part2\log2.c"/>
+  </source>
+  <testbench>
+    <originFiles name="log2_test.c" path="C:\Users\slimakanzer\source\itmo-fourth-year\SoC\lab3\part2\log2_test.c"/>
+  </testbench>
+</autopilotfilemapping:AutoPilotFileMapping>
