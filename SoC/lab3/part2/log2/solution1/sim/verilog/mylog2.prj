@@ -9,7 +9,7 @@ sv xil_defaultlib "mylog2.v"
 sv xil_defaultlib "mylog2_AXILiteS_s_axi.v"
 sv xil_defaultlib "mylog2_fadd_32ns_bkb.v"
 sv xil_defaultlib "mylog2_fmul_32ns_cud.v"
-sv xil_defaultlib "mylog2_mul_41ns_4fYi.v"
+sv xil_defaultlib "mylog2_mul_42ns_4fYi.v"
 sv xil_defaultlib "mylog2_sitofp_32neOg.v"
 sv xil_defaultlib "mylog2_uitofp_32ndEe.v"
 

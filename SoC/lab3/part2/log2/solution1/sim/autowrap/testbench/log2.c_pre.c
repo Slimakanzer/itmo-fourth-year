@@ -587,9 +587,9 @@ void mylog2(float x, float *y);
 
 
 
-unsigned ONE = 1 << (24 - 1);
-unsigned TWO = (1 << (24 - 1)) << 1;
-unsigned GE_TWO_MASK = (-1 << (24 - 1)) << 1;
+unsigned ONE = 1 << (23 - 1);
+unsigned TWO = (1 << (23 - 1)) << 1;
+unsigned GE_TWO_MASK = (-1 << (23 - 1)) << 1;
 
 void mylog2(float x, float *y)
 {
@@ -613,11 +613,11 @@ void mylog2(float x, float *y)
   res_hi += 1;
  }
 
- for (int i = 0; i < 22; i++)
+ for (int i = 0; i < 23 -1; i++)
  {
 #pragma HLS PIPELINE II=2
  res_lo <<= 1;
-  val = (val * val) >> (24 - 1);
+  val = (val * val) >> (23 - 1);
   if (val >= TWO)
   {
    val >>= 1;

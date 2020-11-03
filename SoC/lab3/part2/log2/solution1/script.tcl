@@ -8,8 +8,9 @@ set_top mylog2
 add_files log2.c
 add_files -tb log2_test.c -cflags "-Wno-unknown-pragmas" -csimflags "-Wno-unknown-pragmas"
 open_solution "solution1"
-set_part {xc7a100tcsg324-1} -tool vivado
+set_part {xc7a100t-csg324-1} -tool vivado
 create_clock -period 10 -name default
+config_export -description {Log base 2 functiom} -display_name mylog2 -format ip_catalog -rtl verilog -vendor gleb
 #source "./log2/solution1/directives.tcl"
 csim_design
 csynth_design

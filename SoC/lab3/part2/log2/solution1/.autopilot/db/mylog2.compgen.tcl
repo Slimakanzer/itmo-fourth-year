@@ -347,7 +347,7 @@ puts "@W \[IMPL-101\] Cannot find ::AESL_LIB_XILINX_FPV6::fpv6_gen, check your p
 
 
 set id 5
-set name mylog2_mul_41ns_4fYi
+set name mylog2_mul_42ns_4fYi
 set corename simcore_mul
 set op mul
 set stage_num 2
@@ -357,9 +357,9 @@ set clk_width 1
 set clk_signed 0
 set reset_width 1
 set reset_signed 0
-set in0_width 41
+set in0_width 42
 set in0_signed 0
-set in1_width 41
+set in1_width 42
 set in1_signed 0
 set ce_width 1
 set ce_signed 0

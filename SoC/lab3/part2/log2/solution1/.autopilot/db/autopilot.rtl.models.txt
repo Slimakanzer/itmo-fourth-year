@@ -2,6 +2,6 @@ mylog2_fadd_32ns_bkb
 mylog2_fmul_32ns_cud
 mylog2_uitofp_32ndEe
 mylog2_sitofp_32neOg
-mylog2_mul_41ns_4fYi
+mylog2_mul_42ns_4fYi
 mylog2_AXILiteS_s_axi
 mylog2

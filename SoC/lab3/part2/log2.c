@@ -1,7 +1,7 @@
 #include "log2.h"
 
-#define DIG 24
-#define N_BITS 22
+#define DIG 23
+#define FRAC_BITS DIG - 1
 unsigned ONE = 1 << (DIG - 1);
 unsigned TWO = (1 << (DIG - 1)) << 1;
 unsigned GE_TWO_MASK = (-1 << (DIG - 1)) << 1;
@@ -28,7 +28,7 @@ void mylog2(float x, float *y)
 		res_hi += 1;
 	}
 
-	for (int i = 0; i < N_BITS; i++)
+	for (int i = 0; i < FRAC_BITS; i++)
 	{
 #pragma HLS PIPELINE II=2
 		res_lo <<= 1;
