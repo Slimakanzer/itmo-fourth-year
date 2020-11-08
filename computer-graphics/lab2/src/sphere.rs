@@ -2,8 +2,7 @@ use cgmath::{vec2, vec3};
 use std::f32::consts::PI;
 use std::vec::Vec;
 
-use crate::common::load_texture;
-use crate::mesh::{Mesh, TextureType, Vertex};
+use crate::mesh::{Mesh, Texture, Vertex};
 use crate::Shader;
 
 pub struct Sphere {
@@ -11,13 +10,9 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(r: f32, sector_count: u32, stack_count: u32) -> Sphere {
+    pub fn new(r: f32, sector_count: u32, stack_count: u32, textures: Vec<Texture>) -> Sphere {
         let mut vertices = Vec::new();
         let mut indices = Vec::new();
-        let mut textures = Vec::new();
-        textures.push(load_texture("resources/earth_d.jpg", TextureType::Diffuse));
-        textures.push(load_texture("resources/earth_s.jpg", TextureType::Specular));
-        textures.push(load_texture("resources/earth_n.png", TextureType::Normal));
 
         let sector_step = 2.0 * PI / sector_count as f32;
         let stack_step = PI / stack_count as f32;

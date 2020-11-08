@@ -34,7 +34,8 @@ impl Default for Vertex {
     }
 }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Debug)]
+#[allow(dead_code)]
 pub enum TextureType {
     Diffuse,
     Specular,
@@ -55,7 +56,7 @@ impl fmt::Display for TextureType {
 
 use self::TextureType::*;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Texture {
     pub id: u32,
     pub texture_type: TextureType,
@@ -95,6 +96,7 @@ impl Mesh {
         let mut specular_number = 0;
         let mut normal_number = 0;
         let mut height_number = 0;
+
         for (i, texture) in self.textures.iter().enumerate() {
             gl::ActiveTexture(gl::TEXTURE0 + i as u32);
             let texture_type = &texture.texture_type;

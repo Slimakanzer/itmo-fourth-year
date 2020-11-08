@@ -17,19 +17,19 @@ impl Default for Light {
         Light {
             position: Vector3::zero(),
             ambient: Vector3 {
-                x: 1.0,
-                y: 1.0,
-                z: 1.0,
+                x: 0.5,
+                y: 0.5,
+                z: 0.5,
             },
             diffuse: Vector3 {
-                x: 1.0,
-                y: 1.0,
-                z: 1.0,
+                x: 2.0,
+                y: 2.0,
+                z: 2.0,
             },
             specular: Vector3 {
-                x: 1.0,
-                y: 1.0,
-                z: 1.0,
+                x: 0.5,
+                y: 0.5,
+                z: 0.5,
             },
         }
     }

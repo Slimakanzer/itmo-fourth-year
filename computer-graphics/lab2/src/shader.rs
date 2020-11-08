@@ -62,6 +62,7 @@ impl Shader {
                 ptr::null_mut(),
                 info_log.as_mut_ptr() as *mut GLchar,
             );
+            println!("{}", str::from_utf8(&info_log).unwrap());
             panic!(
                 "ERROR::SHADER::COMPILATION_FAILED Shader:{}\n{}",
                 shader,
@@ -83,7 +84,7 @@ impl Shader {
                 info_log.as_mut_ptr() as *mut GLchar,
             );
             panic!(
-                "ERROR::PROGRAM::COMPILATION_FAILED Program:{}\n{}",
+                "ERROR::PROGRAM::LINK_FAILED Program:{}\n{}",
                 program,
                 str::from_utf8(&info_log).unwrap()
             );
