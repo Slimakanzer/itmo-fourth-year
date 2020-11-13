@@ -744,7 +744,7 @@ _ssdm_op_SpecLoopTripCount(0, 24, 12, "");
   res_hi += 1;
  }
 
- for (int i = 0; i < 23 -1; i++)
+ for (int i = 0; i < 23 - 1; i++)
  {
 _ssdm_op_SpecPipeline(2, 1, 1, 0, "");
  res_lo <<= 1;

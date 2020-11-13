@@ -744,7 +744,7 @@ void mylog2(float x, float *y)
   res_hi += 1;
  }
 
- for (int i = 0; i < 23 -1; i++)
+ for (int i = 0; i < 23 - 1; i++)
  {
 #pragma HLS PIPELINE II=2
  res_lo <<= 1;
