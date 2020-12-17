@@ -9,9 +9,6 @@ enum btn_state
 unsigned int read_sw();
 void animate(unsigned int &animation_state);
 void check_button(btn_state &state_btn);
-void green_light();
-void red_light();
-void yellow_light();
 
 unsigned int led_num[] = {GPIO_PIN_3, GPIO_PIN_4, GPIO_PIN_5, GPIO_PIN_6};
 unsigned int sw_num[] = {GPIO_PIN_4, GPIO_PIN_8, GPIO_PIN_10, GPIO_PIN_12};
