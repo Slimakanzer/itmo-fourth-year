@@ -586,3 +586,202 @@ public class TestAlgorithm {
     Mockito.verifyNoMoreInteractions(exampleClass);
 }
 ```
+
+# 31 Система Selenium. Архитектура, основные команды написания сценариев.
+Selenium - это проект, в рамках которого разрабатывается набор программ с открытым исходным кодом.
+
+* Selenum IDE - расширение для браузера firefox. Может запускать предварительно сценарии. Также может создавать код для Selenium WebDriver и Selenium RC на разных ЯП.
+* Selenium WebDriver - это драйвер (прослойка) между пользовательским приложением и браузером. Он существует оффициально для chromium и opera. Браузер может управляться из пользовательского приложения с помощью вызова функций драйвера.
+* Selenium RC - богом забытая штука, хз для чего
+* Selenium Server - это сервер, который позвалят управлять браузером удаленной машины через сеть. Удаленная машина использует RemoteWebDriver. Может использоваться для кроссбраузерного тестирования.
+* Selenium Grid - это кластер, состоящий из Selenium Server'ов для организации распределенной сети для параллельного тестирования.
+
+Selenium IDE поддерживает набор команд:
+* click clickAndWait - кликнуть на элемент
+* type - ввод значений
+* select - выбрать из списка
+* open - открыть страницу
+* assert*** - проверка на условие, завершает, ели не прошло
+* verify*** - проверка на условие, продолжает
+* wait*** - ожидание события
+* store - сохранение значения в переменной
+* echo - запись в лог
+
+Далее приведен пример для WebDriver
+```java
+public class SeleniumTest {
+    private ChromeDriver driver;
+
+    @Before public void setUpDrivers(){
+        this.driver = new ChromeDriver();
+    }
+
+    @After public void tearDown(){
+        this.driver.quit();
+    }
+
+    @Test public void exampleTest(){
+        driver.get("helloworld.com");
+        var button = driver.findElement(By.id("#login"));
+        button.click();
+
+        var title = driver.findElement(By.id("#title"));
+        assertEquals("helloworld", title.getTitle());
+    }
+}
+```
+
+# 32 Система Selenium. Assertion & Verification. Команды.
+Команды Assertion останавливают тест, если не прошло условие. Verification продолжают.
+
+Пример команд:
+* xxxText[Not]Present
+* xxxElement[Not]Present
+* xxxElemet[Not]Checked
+* xxxSelected[Not]Value
+* xxxTitle
+* xxxValue
+* xxxText
+
+# 33 Система Selenium. Команды wait**.
+Команды позволяют дождаться некоторого события, это необходимо т.к. современные веб сайты зачастую используют AJAX, то есть элементы загружаются асинхронно. В selenium IDE существуют следующие команды:
+* waitForElementEditable
+* waitForElementPresent
+* waitForElementVisible
+
+В webdiver можно использовать следующие команды wait***:
+## Explicit wait
+Такой тип явно прерывает выполнение потока исполнения до определенного события или таймаута. Событие опрашивается с некоторой указанной частотой.
+```java
+WebElement firstResult = new WebDriverWait(driver, Duration.ofSeconds(10))
+        .until(ExpectedConditions.elementToBeClickable(By.xpath("//a/h3")))
+``` 
+
+## Implicit wait
+Такой тип опрашивает в течении некоторого времени DOM модель на наличие элемента.
+```java
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+WebElement myDynamicElement = driver.findElement(By.id("myDynamicElement"));
+```
+
+## Fluent wait
+Такой тип полностью настраивается разработчиком. Время ожидание, частота опроса DOM, игнорирование ошибок.
+```java
+Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+  .withTimeout(Duration.ofSeconds(30))
+  .pollingEvery(Duration.ofSeconds(5))
+  .ignoring(NoSuchElementException.class);
+```
+
+# 34 Система Selenium. Selenium RC, WebDriver, Grid.
+* Selenum IDE - расширение для браузера firefox. Может запускать предварительно сценарии. Также может создавать код для Selenium WebDriver и Selenium RC на разных ЯП.
+* Selenium WebDriver - это драйвер (прослойка) между пользовательским приложением и браузером. Он существует оффициально для chromium и opera. Браузер может управляться из пользовательского приложения с помощью вызова функций драйвера.
+* Selenium RC - богом забытая штука, хз для чего
+* Selenium Server - это сервер, который позвалят управлять браузером удаленной машины через сеть. Удаленная машина использует RemoteWebDriver. Может использоваться для кроссбраузерного тестирования.
+* Selenium Grid - это кластер, состоящий из Selenium Server'ов для организации распределенной сети для параллельного тестирования.
+
+# 35 Язык XPath. Основные конструкции, оси.
+XPath - язык запросов для поиска узлов документа XML. XPath входит в стандарт XSLT.
+
+XPath содержит несколько типов узлов:
+* `element`
+* `attribute`
+* `text`
+* `namespace`
+
+Также можно определить отношения между узлами. Это можно сделать с помощью осей. Они бывают нескольких типов:
+* `ancestor` - все предки
+* `ancestor-or-self`- все предти и текущий узел
+* `child` - ребенок текущего узла
+* `attribute` - атрибут текущего узла
+* `self` - текущий узел
+
+Путь может быть абсолютным (начинается с /) или относительным. // - спуск на уровень.
+
+Пример xpath запроса:
+```xpath
+//div[@id="hello"]/attribute::value
+```
+
+# 36 Язык XPath. Системные функции.
+* `node-set document(object, node-set?)` - Возвращает документ, указанный в параметре object
+* `string format-number(number, string, string?)` - Форматирует число согласно образцу, указанному во втором параметре. Третий параметр указывает именованный формат числа, который должен быть учтён
+* `string generate-id(node-set?)` - Возвращает строку, являющуюся уникальным идентификатором
+* `node-set key(string, object)` - Возвращает множество с указанным ключом (аналогично функции id для идентификаторов)
+* `string unparsed-entity-uri(string)` - Возвращает непроанализированный URI. Если такового нет, возвращает пустую строку
+* `boolean element-available(string)` - Проверяет, доступен ли элемент или множество, указанное в параметре. Параметр рассматривается как XPath
+* `boolean function-available(string)` - Проверяет, доступна ли функция, указанная в параметре. Параметр рассматривается как XPath
+* `object system-property(string)` - Параметры, возвращающие системные переменные.
+
+# 37 Язык XPath. Функции с множествами.
+* `node-set node()`	Возвращает сам узел. Вместо этой функции часто используют заменитель *, но, в отличие от звёздочки, функция node() возвращает и текстовые узлы
+* `string text()`	Возвращает узел, если он текстовый
+* `node-set current()	Возвращает множество из одного элемента, который является текущим. Если мы делаем обработку множества с предикатами, то единственным способом дотянуться из этого предиката до текущего элемента будет данная функция
+* `number position()`	Возвращает позицию элемента в множестве элементов оси.
+* `number last()`	Возвращает номер последнего элемента в множестве элементов оси. 
+* `number count(node-set)`	Возвращает количество элементов в node-set.
+* `string name(node-set?)`	Возвращает полное имя первого тега в множестве
+* `string namespace-url(node-set?)`	Возвращает ссылку на URL, определяющий пространство имён
+* `string local-name(node-set?)`	Возвращает имя первого тега в множестве, без пространства имён
+* `node-set id(object)`	Находит элемент с уникальным идентификатором
+
+# 38 Язык XPath. Строковые, логические и числовые функции.
+## Строковые
+* `string string(object?)`	Возвращает текстовое содержимое элемента. По сути, возвращает объединённое множество текстовых элементов на один уровень ниже
+* `string concat(string, string, string*)`	Соединяет строки, указанные в аргументах
+* `number string-length(string?)`	Возвращает длину строки
+* `boolean contains(string, string)`	Возвращает true, если первая строка содержит вторую, иначе — false
+* `string substring(string, number, number?)`	Возвращает строку, вырезанную из строки, начиная с указанного номера, и, если указан второй номер, — количество символов
+* `string substring-before(string, string)`	Если найдена вторая строка в первой, возвращает строку до первого вхождения второй строки
+* `string substring-after(string, string)`	Если найдена вторая строка в первой, возвращает строку после первого вхождения второй строки
+* `boolean starts-with(string, string)`	Возвращает true, если вторая строка входит в начало первой, иначе — false
+* `boolean ends-with(string, string)`	Возвращает true, если вторая строка входит в конец первой, иначе — false
+* `string normalize-space(string?)`	Убирает лишние и повторные пробелы, а также управляющие символы, заменяя их пробелами
+
+## Логические
+* or, and, =, <, >, <=, >=
+* boolean(obj), true(), false(), not()
+
+## Числовые
+* +, -, *, div, mod
+* number(obj), sum(node-set), floor(number), ceiling(number), round(number)
+
+# 39 Apache JMeter. Архитектура, Элементы тестового плана. Последовательность выполнения.
+JMeter - интсрумент для нагрузочного тестирования и не только, это java апплет с gui.
+
+В тестовый план входят элементы:
+* Thread group - описывает количество потоков (полтзователей), период нарастания, киличество раз исполнения теста
+* Selmplers - описывает запрос на сервер и ожидает ответ. Происходит в том порядке, в котором они расположены в древе плана. Поддерживает большое количество протоколов.
+* Logic controllers - позволяют настраивать логику отправки запросов. Например, отправить запрос один раз.
+* Listeners - предоставляют доступ к информации, собранной во время запуска.
+* Timers - предоставляют задержку перед семплером.
+* Assertions - набор утверждений для проверки корректности результатов ответов от сервера.
+* Configuration elements - может изменять запросы.
+* Preprocess - выполняет указанное действие перед запросом семплера.
+* Postprocess - выполняет указанное действие после запроса семплера.
+
+Последовательность:
+1. Configuration elements
+2. Pre-Processors
+3. Timers
+4. Sampler
+5. Post-Processors (unless SampleResult is null)
+6. Assertions (unless SampleResult is null)
+7. Listeners (unless SampleResult is null)
+
+# 40 Apache Jmeter. Дополнительные возможности. Распределенное тестирование.
+## Генерация CSV
+
+## Bandwidth Throttling
+Ограничение полосы пропускания. Например, тестирование различного рода трафика
+```
+httpclient.socket.http.cps=21000
+httpclient.socket.https.cps=21000
+
+где cps = character pers second = (target bandwidth in kbps * 1024) / 8
+```
+## IP Spoofing
+Подмена Ip адреса, например, тестирование балансировщика нагрузки.
+
+## тест TPC-C
+Это комплексный тест, генерирующий многопользовательскую OLTP (online transaction processing) нагрузку из различных транзакций. Нужен, например, для проверки нового сервера
