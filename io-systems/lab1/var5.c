@@ -42,11 +42,11 @@ static struct file_operations fops =
 
 static struct file_operations dops =
 {
-  .owner = THIS_MODULE,
-  .open = dev_open,
-  .release = dev_close,
-  .read = dev_read,
-  .write = dev_write
+	.owner = THIS_MODULE,
+	.open = dev_open,
+	.release = dev_close,
+	.read = dev_read,
+	.write = dev_write
 };
 
 static int dev_open(struct inode *i, struct file *f)
@@ -81,8 +81,7 @@ static ssize_t dev_write(struct file *f, const char __user *ubuf,  size_t len, l
 	if (values_idx >= MAX_VALUES)
 		return -EFAULT; 
 
-	values[values_idx] = num;
-	values_idx++;
+	values[values_idx++] = num;
 
 	int str_len = strlen(buf);
 	*off = str_len;
@@ -183,20 +182,19 @@ static int __init init(void)
 	dev_major = MAJOR(d_number);
 	dev_minor = MINOR(d_number);
 
-    printk(KERN_INFO "[VAR5 (%d %d)]: initialized\n", dev_major, dev_minor);
-    return 0;
+	printk(KERN_INFO "[VAR5 (%d %d)]: initialized\n", dev_major, dev_minor);
+	return 0;
 }
  
 static void __exit exit(void)
 {
-    cdev_del(&c_dev);
-    device_destroy(cl, d_number);
-    class_destroy(cl);
-    unregister_chrdev_region(d_number, 1);
+	cdev_del(&c_dev);
+	device_destroy(cl, d_number);
+	class_destroy(cl);
+	unregister_chrdev_region(d_number, 1);
 	proc_remove(entry);
-    printk(KERN_INFO "[VAR5 (%d %d)]: exit\n", dev_major, dev_minor);
+	printk(KERN_INFO "[VAR5 (%d %d)]: exit\n", dev_major, dev_minor);
 }
 
 module_init(init);
 module_exit(exit);
-
