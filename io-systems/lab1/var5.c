@@ -149,41 +149,34 @@ static int __init init(void)
 		return -EFAULT;
 
     if ((cl = class_create(THIS_MODULE, d_name)) == NULL)
-	{
-		unregister_chrdev_region(d_number, 1);
-		return -EFAULT;
-	}
+		goto dev_region_destroy;
+
 	cl->devnode = set_devnode;
 
     if (device_create(cl, NULL, d_number, NULL, d_name) == NULL)
-	{
-		class_destroy(cl);
-		unregister_chrdev_region(d_number, 1);
-		return -EFAULT;
-	}
+		goto class_destroy;
+
     cdev_init(&c_dev, &dops);
 
     if (cdev_add(&c_dev, d_number, 1) < 0)
-	{
-		device_destroy(cl, d_number);
-		class_destroy(cl);
-		unregister_chrdev_region(d_number, 1);
-		return -EFAULT;
-	}
+		goto dev_destroy;
 	
 	if ((entry = proc_create(d_name, 0444, NULL, &fops)) == NULL)
-	{
-		device_destroy(cl, d_number);
-		class_destroy(cl);
-		unregister_chrdev_region(d_number, 1);
-		return -ENOMEM;
-	}
+		goto dev_destroy;
 
 	dev_major = MAJOR(d_number);
 	dev_minor = MINOR(d_number);
 
 	printk(KERN_INFO "[VAR5 (%d %d)]: initialized\n", dev_major, dev_minor);
 	return 0;
+
+dev_destroy:
+	device_destroy(cl, d_number);
+class_destroy:
+	class_destroy(cl);
+dev_region_destroy:
+	unregister_chrdev_region(d_number, 1);
+	return -EFAULT;
 }
  
 static void __exit exit(void)
