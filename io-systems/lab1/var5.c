@@ -64,7 +64,10 @@ static ssize_t dev_write(struct file *f, const char __user *ubuf,  size_t len, l
 	char buf[BUFSIZE];
 
 	if (*off > 0 || len > BUFSIZE)
+	{
+		printk(KERN_INFO "[VAR5 (%d %d)]: error occour, buffer to long\n", dev_major, dev_minor);
 		return -EFAULT;
+	}
 
 	if (copy_from_user(buf, ubuf, len))
 		return -EFAULT;
