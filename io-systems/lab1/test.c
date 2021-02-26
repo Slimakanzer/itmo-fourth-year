@@ -2,6 +2,7 @@
 
 int main () {
    FILE *fp;
+   int rc;
   
    fp = fopen("/dev/var5","w+");
 
@@ -12,7 +13,11 @@ int main () {
        str[i] = 'A';
    }
 
-   fprintf(fp, str);
+   if ((rc = fprintf(fp, str)) < 0)
+   {
+       printf("Error occour: %d", rc);
+   }
+
    fclose(fp);
    return(0);
 }
