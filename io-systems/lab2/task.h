@@ -1,10 +1,9 @@
-
 #ifndef MAIN_H_
 #define MAIN_H_
 #include <linux/string.h>
 
 #define SECTOR_SIZE 512 // sector size in bytes
-#define MEMSIZE 0x19000 // N sectors by 512b
+#define MEMSIZE 0x1E000 // N sectors by 512b
 #define MBR_SIZE SECTOR_SIZE
 #define MBR_DISK_SIGNATURE_OFFSET 440
 #define MBR_DISK_SIGNATURE_SIZE 4
@@ -19,11 +18,11 @@
 #define BR_SIGNATURE_SIZE 2
 #define BR_SIGNATURE 0xAA55
 
-/* 
+/*
  * Goto:
  * https://habr.com/ru/post/347002/
  * https://www.opennet.ru/base/dev/hdd_struct.txt.html
- * 
+ *
  */
 typedef struct
 {
@@ -53,13 +52,26 @@ static PartTable def_part_table =
 			boot_type : 0x0,
 			start_head : 0x0,
 			start_sec : 0x0,
+			start_cyl_hi : 0x0,
 			start_cyl : 0x0,
 			part_type : PRM,
 			end_head : 0x0,
 			end_sec : 0x0,
 			end_cyl : 0x0,
-			abs_start_sec : 1,
+			abs_start_sec : 0x1,
 			sec_in_part : MIB_TO_SECTORS(20) - 1
+		},
+		{
+			boot_type : 0x0,
+			start_head : 0x0,
+			start_sec : 0x0,
+			start_cyl : 0x0,
+			part_type : PRM,
+			end_head : 0x0,
+			end_sec : 0x0,
+			end_cyl : 0x0,
+			abs_start_sec : MIB_TO_SECTORS(20),
+			sec_in_part : MIB_TO_SECTORS(20)
 		},
 		{
 			boot_type : 0x0,
@@ -70,11 +82,12 @@ static PartTable def_part_table =
 			end_head : 0x0,
 			end_sec : 0x0,
 			end_cyl : 0x0,
-			abs_start_sec : MIB_TO_SECTORS(20),
-			sec_in_part : MIB_TO_SECTORS(30)
+			abs_start_sec : MIB_TO_SECTORS(40),
+			sec_in_part : MIB_TO_SECTORS(20)
 		}};
 
-static unsigned int def_log_part_ebr_sectors_offset[] = {MIB_TO_SECTORS(20), MIB_TO_SECTORS(30), MIB_TO_SECTORS(40)};
+static unsigned int def_log_part_ebr_sectors_offset_1[] = {MIB_TO_SECTORS(20), MIB_TO_SECTORS(30)};
+static unsigned int def_log_part_ebr_sectors_offset_2[] = {MIB_TO_SECTORS(40), MIB_TO_SECTORS(50)};
 
 static const PartTable def_log_part_table[] =
 	{
@@ -87,7 +100,7 @@ static const PartTable def_log_part_table[] =
 			 end_head : 0x0,
 			 end_sec : 0x0,
 			 end_cyl : 0x0,
-			 abs_start_sec : 1,
+			 abs_start_sec : 0x1,
 			 sec_in_part : MIB_TO_SECTORS(10) - 1
 		 },
 		 {
@@ -100,31 +113,7 @@ static const PartTable def_log_part_table[] =
 			 end_sec : 0x0,
 			 end_cyl : 0x0,
 			 abs_start_sec : MIB_TO_SECTORS(10),
-			 sec_in_part : MIB_TO_SECTORS(10)
-		 }},
-		{{
-			 boot_type : 0x0,
-			 start_head : 0x0,
-			 start_sec : 0x0,
-			 start_cyl : 0x0,
-			 part_type : PRM,
-			 end_head : 0x0,
-			 end_sec : 0x0,
-			 end_cyl : 0x0,
-			 abs_start_sec : 1,
 			 sec_in_part : MIB_TO_SECTORS(10) - 1
-		 },
-		 {
-			 boot_type : 0x0,
-			 start_head : 0x0,
-			 start_sec : 0x0,
-			 start_cyl : 0x0,
-			 part_type : EXT,
-			 end_head : 0x0,
-			 end_sec : 0x0,
-			 end_cyl : 0x0,
-			 abs_start_sec : MIB_TO_SECTORS(20),
-			 sec_in_part : MIB_TO_SECTORS(10)
 		 }},
 		{{
 			boot_type : 0x0,
@@ -135,9 +124,10 @@ static const PartTable def_log_part_table[] =
 			end_head : 0x0,
 			end_sec : 0x0,
 			end_cyl : 0x0,
-			abs_start_sec : 1,
-			sec_in_part : MIB_TO_SECTORS(10) - 1
-		}}};
+			abs_start_sec : 0x1,
+			sec_in_part : MIB_TO_SECTORS(10) - 2
+		}},
+};
 
 static void copy_mbr(u8 *disk)
 {
@@ -149,10 +139,10 @@ static void copy_mbr(u8 *disk)
 
 static void copy_br(u8 *disk, int abs_start_sector, const PartTable *part_table)
 {
-	void *br_offset = disk + abs_start_sector * SECTOR_SIZE;
-	memset(br_offset, 0x0, BR_SIZE);
-	memcpy(br_offset + PARTITION_TABLE_OFFSET, part_table, PARTITION_TABLE_SIZE);
-	*(unsigned short *)(br_offset + BR_SIGNATURE_OFFSET) = BR_SIGNATURE;
+	void *br_start = disk + abs_start_sector * SECTOR_SIZE;
+	memset(br_start, 0x0, BR_SIZE);
+	memcpy(br_start + PARTITION_TABLE_OFFSET, part_table, PARTITION_TABLE_SIZE);
+	*(unsigned short *)(br_start + BR_SIGNATURE_OFFSET) = BR_SIGNATURE;
 }
 
 static void copy_mbr_n_br(u8 *disk)
@@ -162,7 +152,8 @@ static void copy_mbr_n_br(u8 *disk)
 	copy_mbr(disk);
 	for (i = 0; i < ARRAY_SIZE(def_log_part_table); i++)
 	{
-		copy_br(disk, def_log_part_ebr_sectors_offset[i], &def_log_part_table[i]);
+		copy_br(disk, def_log_part_ebr_sectors_offset_1[i], &def_log_part_table[i]);
+		copy_br(disk, def_log_part_ebr_sectors_offset_2[i], &def_log_part_table[i]);
 	}
 }
 

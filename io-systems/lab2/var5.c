@@ -1,14 +1,21 @@
 #include <linux/module.h>
-#include <linux/fs.h>		
-#include <linux/errno.h>	
-#include <linux/types.h>	
-#include <linux/fcntl.h>	
+#include <linux/fs.h>
+#include <linux/errno.h>
+#include <linux/types.h>
+#include <linux/fcntl.h>
 #include <linux/vmalloc.h>
 #include <linux/genhd.h>
 #include <linux/blkdev.h>
 #include <linux/bio.h>
 #include <linux/string.h>
+
+#define ADDITIONAL_TASK 0
+
+#if ADDITIONAL_TASK
+#include "task.h"
+#else
 #include "var5.h"
+#endif
 
 #define DEV_NAME "var5"
 #ifndef SECTOR_SIZE
@@ -30,7 +37,7 @@ struct mydiskdrive_dev
 
 int major;
 
-static int my_open(struct block_device *x, fmode_t mode)	 
+static int my_open(struct block_device *x, fmode_t mode)
 {
 	return 0;
 }
@@ -40,10 +47,10 @@ static void my_release(struct gendisk *disk, fmode_t mode)
 }
 
 static struct block_device_operations fops =
-{
-	.owner = THIS_MODULE,
-	.open = my_open,
-	.release = my_release,
+	{
+		.owner = THIS_MODULE,
+		.open = my_open,
+		.release = my_release,
 };
 
 static int rb_transfer(struct request *req)
@@ -55,9 +62,9 @@ static int rb_transfer(struct request *req)
 	unsigned int sector_cnt = blk_rq_sectors(req);
 
 	struct bio_vec bv;
-	#define BV_PAGE(bv) ((bv).bv_page)
-	#define BV_OFFSET(bv) ((bv).bv_offset)
-	#define BV_LEN(bv) ((bv).bv_len)
+#define BV_PAGE(bv) ((bv).bv_page)
+#define BV_OFFSET(bv) ((bv).bv_offset)
+#define BV_LEN(bv) ((bv).bv_len)
 
 	struct req_iterator iter;
 	sector_t sector_offset = 0;
@@ -74,20 +81,20 @@ static int rb_transfer(struct request *req)
 		}
 
 		sectors = BV_LEN(bv) / SECTOR_SIZE;
-		printk(KERN_DEBUG "[%s]: Sector: %llu, Sector Offset: %llu; Buffer: %p; Length: %u sectors",\
-		DEV_NAME, (unsigned long long)(start_sector), (unsigned long long) (sector_offset), buffer, sectors);
-		
+		printk(KERN_DEBUG "[%s]: Sector: %llu, Sector Offset: %llu; Buffer: %p; Length: %u sectors",
+			   DEV_NAME, (unsigned long long)(start_sector), (unsigned long long)(sector_offset), buffer, sectors);
+
 		if (dir == WRITE)
 		{
-			memcpy((device.data) + ((start_sector+sector_offset) * SECTOR_SIZE), buffer ,sectors * SECTOR_SIZE);		
+			memcpy((device.data) + ((start_sector + sector_offset) * SECTOR_SIZE), buffer, sectors * SECTOR_SIZE);
 		}
 		else
 		{
-			memcpy(buffer, (device.data) + ((start_sector+sector_offset) * SECTOR_SIZE), sectors * SECTOR_SIZE);	
+			memcpy(buffer, (device.data) + ((start_sector + sector_offset) * SECTOR_SIZE), sectors * SECTOR_SIZE);
 		}
 		sector_offset += sectors;
 	}
-	
+
 	if (sector_offset != sector_cnt)
 	{
 		printk(KERN_ERR "[%s]: bio info doesn't match with the request info", DEV_NAME);
@@ -113,7 +120,7 @@ int disk_init(void)
 	device.data = vmalloc(MEMSIZE * SECTOR_SIZE);
 	copy_mbr_n_br(device.data);
 
-	return MEMSIZE;	
+	return MEMSIZE;
 }
 
 void disk_cleanup(void)
@@ -133,9 +140,9 @@ static int __init bdev_init(void)
 	if (!(device.queue = blk_init_queue(dev_request, &device.lock)))
 		goto failed_queue;
 
-	if (!(device.gd = alloc_disk(8)))
+	if (!(device.gd = alloc_disk(4)))
 		goto failed_gendisk;
-	
+
 	device.gd->major = major;
 	device.gd->first_minor = 0;
 	device.gd->fops = &fops;
@@ -144,7 +151,7 @@ static int __init bdev_init(void)
 	sprintf(device.gd->disk_name, DEV_NAME);
 
 	printk(KERN_INFO "[%s]: initialized, major %d", DEV_NAME, major);
-	set_capacity(device.gd, device.sectors);  
+	set_capacity(device.gd, device.sectors);
 	add_disk(device.gd);
 	return 0;
 
